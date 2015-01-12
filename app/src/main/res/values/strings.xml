@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroPlaces</string>
+    <string name="title_activity_home_screen">AboutPlaces</string>
+    <string name="api_url">https://api.about.place</string>
+    <string name="bars_url">/systems/entertainment/bars</string>
+    <string name="bowling_alleys_url">/systems/entertainment/bowling</string>
+    <string name="dance_url">/systems/health/fitness/dance</string>
+    <string name="casual_dinning_url">/systems/restaurants/types/casual</string>
+    <string name="movie_theaters_url">/systems/entertainment/movie_theaters</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
