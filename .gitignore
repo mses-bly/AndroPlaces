@@ -8,3 +8,5 @@ gradle*
 app/src/main/res/values/api_keys.xml
 app/src/release/*
 AndroPlaces.iml
+build.gradle
+settings.gradle
