@@ -73,10 +73,9 @@ public class APIRequests {
         return null;
     }
 
-    //TODO Redundant code, suppress smartapppid string, already got it in the system.
     //Obtain top 1 PLACE within map bounds
-    public static Place getBestPlaceInView(String mapViewBounds, String smartMapPid, System system, Context context) {
-        String requestURL = context.getString(R.string.api_url) + "/smartmapp/" + smartMapPid + "/places/in/" + mapViewBounds + "?limit=1&api_key=" + context.getString(R.string.about_place_api_key);
+    public static Place getBestPlaceInView(String mapViewBounds, System system, Context context) {
+        String requestURL = context.getString(R.string.api_url) + "/smartmapp/" + system.getSmartAppPid() + "/places/in/" + mapViewBounds + "?limit=1&api_key=" + context.getString(R.string.about_place_api_key);
         Log.d("INFO", "Requesting best place for: " + requestURL);
         JSONArray response = makeHttpRequestArray(requestURL);
         if (response == null) {

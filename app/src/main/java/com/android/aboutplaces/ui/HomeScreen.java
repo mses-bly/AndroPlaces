@@ -1,4 +1,3 @@
-
 package com.android.aboutplaces.ui;
 
 import android.app.ProgressDialog;
@@ -315,7 +314,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Place place = APIRequests.getBestPlaceInView(mapBounds, system.getSmartAppPid(), system, context);
+                Place place = APIRequests.getBestPlaceInView(mapBounds, system, context);
                 //if could obtain a place for this coordinates and system
                 if (place != null) {
                     ArrayList<LatLng> thisPlaceShape = APIRequests.getPlaceShape(place, context);

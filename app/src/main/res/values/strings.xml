@@ -9,6 +9,4 @@
     <string name="casual_dinning_url">/systems/restaurants/types/casual</string>
     <string name="movie_theaters_url">/systems/entertainment/movie_theaters</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
