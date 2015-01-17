@@ -26,14 +26,15 @@ import java.util.Hashtable;
 
 /**
  * Created by Moises on 12/22/2014.
+ * Choice of using basic HTTP GET rather than Volley in order to have more control of the threads and sequence of app.
  */
 
 //Communications interface with the API
 public class APIRequests {
-    //synchronization token to use for the 1 sec restriction between calls
+    //synchronization token to use for the 1 sec restriction between calls.
     private static Object synchronizationToken = new Object();
 
-    //Obtain APIs available metro areas
+    //Obtain APIs available metro areas.
     public static Hashtable<String, String> getAvailableMetros(Context context) {
         final String requestURL = context.getString(R.string.api_url) + "/metro/?api_key=" + context.getString(R.string.about_place_api_key);
         Log.d("INFO", "Requesting available metros " + requestURL);
@@ -41,13 +42,11 @@ public class APIRequests {
         if (response == null) {
             return null;
         }
-        String[] metrosNames = new String[response.length()];
         Hashtable<String, String> availableMetros = new Hashtable<>();
         try {
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jsonObject = response.getJSONObject(i);
                 String metro = (String) jsonObject.get("metro");
-                metrosNames[i] = metro.substring(0, 1).toUpperCase() + metro.substring(1, metro.length());
                 availableMetros.put(metro, jsonObject.getString("metroid"));
             }
             return availableMetros;
@@ -57,7 +56,7 @@ public class APIRequests {
         return null;
     }
 
-    //Obtain APIs smartMapPid for a given metro area and desired system
+    //Obtain APIs SmartMapPid for a given metro area and desired system.
     public static String getSmartMapPid(String metroID, System system, Context context) {
         String requestURL = null;
         try {
@@ -74,6 +73,7 @@ public class APIRequests {
         return null;
     }
 
+    //TODO Redundant code, suppress smartapppid string, already got it in the system.
     //Obtain top 1 PLACE within map bounds
     public static Place getBestPlaceInView(String mapViewBounds, String smartMapPid, System system, Context context) {
         String requestURL = context.getString(R.string.api_url) + "/smartmapp/" + smartMapPid + "/places/in/" + mapViewBounds + "?limit=1&api_key=" + context.getString(R.string.about_place_api_key);
@@ -95,7 +95,8 @@ public class APIRequests {
         }
         return null;
     }
-    //Obtain PLACE shape
+
+    //Obtain PLACE shape.
     public static ArrayList<LatLng> getPlaceShape(Place place, Context context) {
         String requestURL = context.getString(R.string.api_url) + "/place/" + place.getPlaceId() + "/shape.geojson?api_key=" + context.getString(R.string.about_place_api_key);
         try {
@@ -118,7 +119,8 @@ public class APIRequests {
         }
         return null;
     }
-    //Obtain PLACE count
+
+    //Obtain PLACE count.
     public static String getPlaceCount(Place place, Context context) {
         final String requestURL = context.getString(R.string.api_url) + "/place/" + place.getPlaceId() + place.getSystem().getSystemURL() + "?count&api_key=" + context.getString(R.string.about_place_api_key);
         try {
@@ -134,7 +136,8 @@ public class APIRequests {
         }
         return null;
     }
-    //HTTP Get with JSON Array response
+
+    //HTTP Get with JSON Array response. Basic utility function.
     private static JSONArray makeHttpRequestArray(String URL) {
         HttpResponse response = null;
         try {
@@ -142,7 +145,7 @@ public class APIRequests {
             HttpGet request = new HttpGet();
             request.setURI(new URI(URL));
             //Obligatory to respect API restrictions - 1 call every second
-            synchronized(synchronizationToken){
+            synchronized (synchronizationToken) {
                 response = client.execute(request);
                 sleep(400);
             }
@@ -162,16 +165,22 @@ public class APIRequests {
         }
         return null;
     }
-    //HTTP Get with JSON Object response
+
+    //HTTP Get with JSON Object. Basic utility function.
     private static JSONObject makeHttpRequestObject(String URL) {
         HttpResponse response = null;
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
             request.setURI(new URI(URL));
-            //Obligatory to respect API restrictions - 1 call every second
-            synchronized(synchronizationToken){
+            //Obligatory to respect API restrictions - 1 call per second, maximum.
+            synchronized (synchronizationToken) {
                 response = client.execute(request);
+                /*
+                    trying to reduce the blocking time as much as possible. 400 ms is a good amount
+                    that together with thread execution time will give a second delay between API
+                    calls.
+                 */
                 sleep(400);
             }
             if (response != null) {
@@ -191,7 +200,10 @@ public class APIRequests {
         return null;
     }
 
-    private static void sleep(long millisec){
+    /*
+        Just to avoid overcrowding the code with try catch blocks.
+     */
+    private static void sleep(long millisec) {
         try {
             Thread.sleep(millisec);
         } catch (InterruptedException e) {

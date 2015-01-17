@@ -10,8 +10,8 @@ import android.support.v4.app.DialogFragment;
 
 /**
  * Created by Moises on 12/21/2014.
+ * Custom class to create a selectable list dialog. Shows a dialog with a list of possibilities and responds to the selection event.
  */
-//Custom class to create a selectable list dialog. Shows a dialog with a list of possibilities and responds to the selection event.
 public class MyListDialog extends DialogFragment {
     public MyListDialog(){}
 
@@ -25,7 +25,6 @@ public class MyListDialog extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (ListDialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception

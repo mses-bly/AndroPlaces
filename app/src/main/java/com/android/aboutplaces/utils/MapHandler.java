@@ -5,8 +5,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 
-import com.android.aboutplaces.ui.HomeScreen;
 import com.android.aboutplaces.model.Place;
+import com.android.aboutplaces.ui.HomeScreen;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -22,21 +22,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Moises on 12/22/2014.
+ * Map UI handler class. Uses Google Maps v2 for Android API.
+ * Handles most of the maps interactions.
  */
-//Map UI handler class. Uses Google Maps v2 for Android API
 public class MapHandler {
 
-    //keep track of markers in the Map
+    //Table to keep track of markers in the map object.
     private Hashtable<Marker, String> markersTable;
-    //polygon being drawn in the map
+    //Only one polygon will be drawn in the map at a particular time, when the user taps on a marker.
     private Polygon polygon;
-    //map oject
+    //Map object.
     private GoogleMap gmap;
-    //calling fragment class
+    //Some interactions with the main UI thread need to be acceded from this class, so we need the calling fragment.
     private HomeScreen parentFragment;
 
     public MapHandler(GoogleMap gmap, HomeScreen parentFragment) {
@@ -45,7 +45,7 @@ public class MapHandler {
         markersTable = new Hashtable<>();
     }
 
-    //obtain Latitude and Longitude from String address
+    //Obtain Latitude and Longitude from String address
     public LatLng getLatLngFromAddress(String addr) {
         Geocoder geocoder = new Geocoder(parentFragment);
         try {
@@ -77,7 +77,7 @@ public class MapHandler {
         return null;
     }
 
-    //move the map camera to a given position, with a given zoom. Performs a simple animation on movement.
+    //Move the map camera to a given position, with a given zoom. Performs a simple animation on movement.
     public void moveMapToPoint(LatLng latLng, float zoom) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng)
@@ -86,18 +86,19 @@ public class MapHandler {
         gmap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
     }
 
-    //get the visible area bounds of the map, at the moment of call.
+    //Get the visible area bounds of the map, at the moment of call.
     public String getMapViewBounds() {
         LatLngBounds bounds = gmap.getProjection().getVisibleRegion().latLngBounds;
         LatLng ne = bounds.northeast;
         LatLng sw = bounds.southwest;
         double[] result = {sw.longitude, sw.latitude, ne.longitude, ne.latitude};
         String resultString = Arrays.toString(result);
+        //simple format of the String array - remove spaces and square brackets at the beginning and end to
+        //provide the API with necessary set of BBox parameters.
         resultString = resultString.substring(1, resultString.length() - 1);
-        resultString.replaceAll("\\s+", "");
         return resultString.replaceAll("\\s+", "");
     }
-
+    //Draw the shape of a place in the map.
     public void drawPlace(Place place) {
         if (polygon != null) {
             polygon.remove();
@@ -110,12 +111,12 @@ public class MapHandler {
             polygon = gmap.addPolygon(options);
         }
     }
-    //clear all objects from the map (markers, polygons etc.)
+    //Clear all objects from the map (markers, polygons etc.)
     public void clearMap(){
         gmap.clear();
         markersTable.clear();
     }
-    //initializes the map object to a clean state. Defines the marker click event.
+    //Initializes the map object to a clean state. Defines the marker click event.
     public void initializeMapInformation() {
         gmap.clear();
         markersTable.clear();
@@ -141,7 +142,7 @@ public class MapHandler {
         });
     }
 
-    //draws the polygon associated with a PLACE in the map
+    //Draw the marker for a place.
     public void drawPlaceMarker(Place place) {
         if (place.getShapeCoordinates() != null && place.getShapeCoordinates().size() > 0) {
             LatLngBounds.Builder bounds = new LatLngBounds.Builder();

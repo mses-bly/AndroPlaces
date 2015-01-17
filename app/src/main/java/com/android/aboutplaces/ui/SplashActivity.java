@@ -13,8 +13,8 @@ import java.util.TimerTask;
 
 /**
  * Created by Moises on 12/29/2014.
+ * Splash screen for the app.
  */
-//Splash screen.
 public class SplashActivity extends Activity {
 
     @Override

@@ -9,10 +9,15 @@ import java.util.ArrayList;
  */
 //PLACE basic model.
 public class Place {
+    //Id
     private String placeId;
+    //Pulse
     private String placePulse;
+    //Coordinates that define the place shape
     private ArrayList<LatLng> shapeCoordinates;
+    //Count of relevant locations to this PLACE
     private String count = null;
+    //System to which this place belongs to: i.e. cinemas, bars ...
     private System system;
 
     public String getPlaceId() {
@@ -57,7 +62,7 @@ public class Place {
 
     @Override
     public boolean equals(Object o) {
-        Place other = (Place)o;
-        return this.placeId == other.placeId;
+        Place other = (Place) o;
+        return this.placeId.equals(other.placeId);
     }
 }

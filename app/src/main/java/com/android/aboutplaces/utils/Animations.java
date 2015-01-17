@@ -6,6 +6,10 @@ import android.view.animation.Animation;
 
 /**
  * Created by Moises on 12/26/2014.
+ * Simple animations for the app.
+ * Fade In.
+ * Fade Out.
+ *
  */
 public class Animations {
 
