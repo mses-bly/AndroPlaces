@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/ic_metro_pressed" />
+        android:drawable="@drawable/ic_action_metro_pressed" />
     <item
-        android:drawable="@drawable/ic_metro" />
+        android:drawable="@drawable/ic_action_metro" />
 </selector>

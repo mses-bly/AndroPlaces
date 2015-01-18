@@ -38,6 +38,8 @@ public class MapHandler {
     private GoogleMap gmap;
     //Some interactions with the main UI thread need to be acceded from this class, so we need the calling fragment.
     private HomeScreen parentFragment;
+    //Store the last obtained map bounds;
+    private String mapBounds;
 
     public MapHandler(GoogleMap gmap, HomeScreen parentFragment) {
         this.gmap = gmap;
@@ -87,7 +89,7 @@ public class MapHandler {
     }
 
     //Get the visible area bounds of the map, at the moment of call.
-    public String getMapViewBounds() {
+    public String refreshMapViewBounds() {
         LatLngBounds bounds = gmap.getProjection().getVisibleRegion().latLngBounds;
         LatLng ne = bounds.northeast;
         LatLng sw = bounds.southwest;
@@ -96,7 +98,13 @@ public class MapHandler {
         //simple format of the String array - remove spaces and square brackets at the beginning and end to
         //provide the API with necessary set of BBox parameters.
         resultString = resultString.substring(1, resultString.length() - 1);
-        return resultString.replaceAll("\\s+", "");
+        mapBounds = resultString.replaceAll("\\s+", "");
+        return mapBounds;
+    }
+
+    //Retrieves the last stored map bounds, without asking the map object
+    public String getMapBounds(){
+        return mapBounds;
     }
     //Draw the shape of a place in the map.
     public void drawPlace(Place place) {

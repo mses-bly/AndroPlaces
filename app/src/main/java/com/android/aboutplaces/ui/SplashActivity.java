@@ -35,6 +35,6 @@ public class SplashActivity extends Activity {
             }
         };
         Timer timer = new Timer();
-        timer.schedule(task, 3000);
+        timer.schedule(task, 5000);
     }
 }

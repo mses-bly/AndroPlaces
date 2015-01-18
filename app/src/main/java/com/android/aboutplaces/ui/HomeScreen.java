@@ -117,7 +117,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
         super.onDestroy();
     }
 
-    //sets up the map object, if it needs to be done.
+    //Sets up the map object, if it needs to be done (first time launch).
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -131,28 +131,31 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
             //Enable the GPS button.
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            //Define the listener for the GPS button.
             mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-                    //Simulate GPS location button touch, since I am not in an available metro area.
+                    //Simulate GPS location button tap, since I am not in an available metro area.
                     LatLng position = mapHandler.getLatLngFromAddress("Miami Beach, FL");
                     if (position == null) {
                         Toast.makeText(context, "Given address could not be resolved", Toast.LENGTH_LONG).show();
                         return true;
                     }
+                    //clear the map, as we are going to move to a new location.
                     mapHandler.clearMap();
+                    //move the map with animation.
                     mapHandler.moveMapToPoint(position, 14);
-                    //try to determine whether the user's location is in one of available metro areas
+                    //try to determine whether the user's location is in one of available metro areas.
                     //(current or otherwise)
                     String usersMetro = mapHandler.getLocalityFromLatLng(position);
                     if (usersMetro != null) {
-                        //the user is not in the currently selected metro
-                        //we need to check if the user is in an available metro, and if so, change all
+                        //we need to check if the user is in the currently selected metro area.
                         if (!usersMetro.toLowerCase().contains(currentMetro)) {
+                            //The user is in a different metro area than the currently selected.
                             currentMetro = null;
                             for (String metro : availableMetrosTable.keySet()) {
                                 //Try to figure out if the user is in an available metro area.
-                                //Sequential search, probably could be done better with a regex. But only 3 metros so far, so its transparent.
+                                //Sequential search, probably could be done better. But only 3 metros so far, so its transparent.
                                 if (usersMetro.toLowerCase().contains(metro)) {
                                     currentMetro = metro;
                                     getSmartAppPids(metro);
@@ -177,16 +180,16 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
     //Load the systems to be used in this version of the app.
     //Any given set of systems could be loaded. I have chosen these as an example app for nightlife.
     private void loadSystems() {
-        System bars = new System("bars", "Bars", getString(R.string.bars_url), R.drawable.bar);
-        System bowling_alleys = new System("bowling_alleys", "Bowling Alleys", getString(R.string.bowling_alleys_url), R.drawable.bowling);
-        System dance = new System("dance", "Dance salons", getString(R.string.dance_url), R.drawable.dance);
-        System casual_dinning = new System("casual_dinning_url", "Casual Dinning Restaurants", getString(R.string.casual_dinning_url), R.drawable.casual);
-        System movie_theaters = new System("movie_theaters", "Movie Theaters", getString(R.string.movie_theaters_url), R.drawable.movie_theaters);
+        System bars = new System("bars", "Bars", getString(R.string.bars_url), R.drawable.marker_bar);
+        System bowling_alleys = new System("bowling_alleys", "Bowling Alleys", getString(R.string.bowling_alleys_url), R.drawable.marker_bowling);
+        System dance = new System("dance", "Dance salons", getString(R.string.dance_url), R.drawable.marker_dance);
+        System casual_dinning = new System("casual_dinning_url", "Casual Dinning Restaurants", getString(R.string.casual_dinning_url), R.drawable.marker_casual);
+        System movie_theaters = new System("movie_theaters", "Movie Theaters", getString(R.string.movie_theaters_url), R.drawable.marker_movie);
         systemsTable.put("bars", bars);
-        //systemsTable.put("bowling_alleys", bowling_alleys);
-        //systemsTable.put("dance", dance);
-        //systemsTable.put("casual_dinning", casual_dinning);
-        //systemsTable.put("movie_theaters", movie_theaters);
+        systemsTable.put("bowling_alleys", bowling_alleys);
+        systemsTable.put("dance", dance);
+        systemsTable.put("casual_dinning", casual_dinning);
+        systemsTable.put("movie_theaters", movie_theaters);
     }
 
     //Event to handle when the user has selected an available metro area
@@ -200,6 +203,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
             return;
         }
         mapHandler.moveMapToPoint(position, 14);
+        Toast.makeText(this, "Getting PLACES in this area...", Toast.LENGTH_LONG).show();
     }
 
     //Updates the map information for a particular system.
@@ -208,21 +212,21 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
             @Override
             public void run() {
                 //Obtain the app visible bounds and the best place in the viewport.
-                String mapBounds = mapHandler.getMapViewBounds();
-                getBestPlaceInView(system, mapBounds);
+                mapHandler.refreshMapViewBounds();
             }
         });
+        getBestPlaceInView(system, mapHandler.getMapBounds());
 
     }
 
     //Updates the map for all included systems.
     private void updateMap() {
         Animations.fadeOut(textView);
-        String mapBounds = mapHandler.getMapViewBounds();
+        mapHandler.refreshMapViewBounds();
         Toast.makeText(this, "Getting PLACES in this area...", Toast.LENGTH_LONG).show();
         for (String systemId : systemsTable.keySet()) {
             if (systemsTable.get(systemId).getSmartAppPid() != null) {
-                getBestPlaceInView(systemsTable.get(systemId), mapBounds);
+                getBestPlaceInView(systemsTable.get(systemId), mapHandler.getMapBounds());
             }
         }
     }
@@ -236,6 +240,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
                     @Override
                     public void run() {
                         progressDialog = ProgressDialog.show(context, null, "Obtaining available metro areas");
+                        progressDialog.setCancelable(false);
                     }
                 });
                 if (availableMetrosTable == null || availableMetrosTable.isEmpty()) {
@@ -268,7 +273,6 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
                             selectMetroDialog.show(getSupportFragmentManager(), "select_metro_dialog");
                         }
                     });
-
                 }
                 handler.post(new Runnable() {
                     @Override
@@ -325,7 +329,6 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
                         synchronized (bestPlaceInViewTable) {
                             bestPlaceInViewTable.put(system.getSystemId(), place);
                         }
-                        updatePulseAverageText();
                         //we can draw the marker once we obtain the shape.
                         //If the shape has a non convex shape, this method my throw the marker out of the shape.
                         handler.post(new Runnable() {
@@ -345,6 +348,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
                                 bestPlaceInViewTable.put(system.getSystemId(), place);
                             }
                         }
+                        updatePulseAverageText();
                     }
                 }
             }
