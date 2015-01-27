@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Moises on 12/22/2014.
+ * PLACE basic model.
  */
-//PLACE basic model.
 public class Place {
     //Id
     private String placeId;
-    //Pulse
+    //Place Pulse
     private String placePulse;
     //Coordinates that define the place shape
     private ArrayList<LatLng> shapeCoordinates;
@@ -60,6 +60,7 @@ public class Place {
         this.system = system;
     }
 
+    //Equality test based on place Id.
     @Override
     public boolean equals(Object o) {
         Place other = (Place) o;

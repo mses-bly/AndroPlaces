@@ -2,8 +2,8 @@ package com.android.aboutplaces.model;
 
 /**
  * Created by Moises on 12/25/2014.
+ * Basic Model for a System (i.e.  Bars, Restaurants ...)
  */
-//Basic Model for a System (i.e.  Bars)
 public class System {
     //ID i.e. bowling_alleys: stored by string value rather than numeric for easy of use with API.
     private String systemId;
@@ -47,6 +47,7 @@ public class System {
         this.smartAppPid = smartAppPid;
     }
 
+    //Equality test based on the defined system Id: bowling_alleys != bars
     @Override
     public boolean equals(Object o) {
         System other = (System)o;

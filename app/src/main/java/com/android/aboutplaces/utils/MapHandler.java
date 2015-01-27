@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by Moises on 12/22/2014.
  * Map UI handler class. Uses Google Maps v2 for Android API.
- * Handles most of the maps interactions.
+ * Handles most of the map interactions.
  */
 public class MapHandler {
 

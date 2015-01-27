@@ -177,8 +177,8 @@ public class APIRequests {
                 response = client.execute(request);
                 /*
                     trying to reduce the blocking time as much as possible. 400 ms is a good amount
-                    that together with thread execution time will give a second delay between API
-                    calls.
+                    that together with thread execution time will give one second delay between API
+                    calls, for most cases.
                  */
                 sleep(400);
             }
