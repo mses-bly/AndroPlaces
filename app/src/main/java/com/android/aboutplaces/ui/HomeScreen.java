@@ -150,7 +150,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
                     String usersMetro = mapHandler.getLocalityFromLatLng(position);
                     if (usersMetro != null) {
                         //we need to check if the user is in the currently selected metro area.
-                        if (!usersMetro.toLowerCase().contains(currentMetro)) {
+                        if (!usersMetro.toLowerCase().contains(currentMetro.toLowerCase())) {
                             //The user is in a different metro area than the currently selected.
                             currentMetro = null;
                             for (String metro : availableMetrosTable.keySet()) {
