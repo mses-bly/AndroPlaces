@@ -178,7 +178,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
     }
 
     //Load the systems to be used in this version of the app.
-    //Any given set of systems could be loaded. I have chosen these as an example app for nightlife.
+    //Any given set of systems could be loaded. I have chosen these as an example (and reduced the number of loaded systems for a more fluid demo).
     private void loadSystems() {
         System bars = new System("bars", "Bars", getString(R.string.bars_url), R.drawable.marker_bar);
         //System bowling_alleys = new System("bowling_alleys", "Bowling Alleys", getString(R.string.bowling_alleys_url), R.drawable.marker_bowling);
