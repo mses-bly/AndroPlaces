@@ -181,13 +181,13 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
     //Any given set of systems could be loaded. I have chosen these as an example app for nightlife.
     private void loadSystems() {
         System bars = new System("bars", "Bars", getString(R.string.bars_url), R.drawable.marker_bar);
-        System bowling_alleys = new System("bowling_alleys", "Bowling Alleys", getString(R.string.bowling_alleys_url), R.drawable.marker_bowling);
-        System dance = new System("dance", "Dance salons", getString(R.string.dance_url), R.drawable.marker_dance);
+        //System bowling_alleys = new System("bowling_alleys", "Bowling Alleys", getString(R.string.bowling_alleys_url), R.drawable.marker_bowling);
+        //System dance = new System("dance", "Dance salons", getString(R.string.dance_url), R.drawable.marker_dance);
         System casual_dinning = new System("casual_dinning_url", "Casual Dinning Restaurants", getString(R.string.casual_dinning_url), R.drawable.marker_casual);
         System movie_theaters = new System("movie_theaters", "Movie Theaters", getString(R.string.movie_theaters_url), R.drawable.marker_movie);
         systemsTable.put("bars", bars);
-        systemsTable.put("bowling_alleys", bowling_alleys);
-        systemsTable.put("dance", dance);
+        //systemsTable.put("bowling_alleys", bowling_alleys);
+        //systemsTable.put("dance", dance);
         systemsTable.put("casual_dinning", casual_dinning);
         systemsTable.put("movie_theaters", movie_theaters);
     }
@@ -373,9 +373,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
             @Override
             public void run() {
                 if (textView.getVisibility() == View.VISIBLE) {
-                    Animations.fadeOut(textView);
                     textView.setText("Pulse for this area: " + pulse);
-                    Animations.fadeIn(textView);
                 } else {
                     textView.setText("Pulse for this area: " + pulse);
                     Animations.fadeIn(textView);
