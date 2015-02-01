@@ -67,7 +67,7 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
         systemsTable = new Hashtable<>();
         //prepare best places table
         bestPlaceInViewTable = new Hashtable<>();
-        //load the systems we are going to use. For this instance of the app: bars, bowling alleys, dance salons, casual dinning, movie theaters.
+        //load the systems we are going to use. For this instance of the app: bars, bowling alleys, dance salons, casual dining, movie theaters.
         //This would allow the app to be reconverted to show a different set of systems without modifying the logic of the app, only this function.
         loadSystems();
         //load the map API object
@@ -183,12 +183,12 @@ public class HomeScreen extends FragmentActivity implements MyListDialog.ListDia
         System bars = new System("bars", "Bars", getString(R.string.bars_url), R.drawable.marker_bar);
         //System bowling_alleys = new System("bowling_alleys", "Bowling Alleys", getString(R.string.bowling_alleys_url), R.drawable.marker_bowling);
         //System dance = new System("dance", "Dance salons", getString(R.string.dance_url), R.drawable.marker_dance);
-        System casual_dinning = new System("casual_dinning_url", "Casual Dinning Restaurants", getString(R.string.casual_dinning_url), R.drawable.marker_casual);
+        System casual_dining = new System("casual_dining_url", "Casual Dining Restaurants", getString(R.string.casual_dining_url), R.drawable.marker_casual);
         System movie_theaters = new System("movie_theaters", "Movie Theaters", getString(R.string.movie_theaters_url), R.drawable.marker_movie);
         systemsTable.put("bars", bars);
         //systemsTable.put("bowling_alleys", bowling_alleys);
         //systemsTable.put("dance", dance);
-        systemsTable.put("casual_dinning", casual_dinning);
+        systemsTable.put("casual_dining", casual_dining);
         systemsTable.put("movie_theaters", movie_theaters);
     }
 

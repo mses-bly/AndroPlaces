@@ -6,7 +6,7 @@
     <string name="bars_url">/systems/entertainment/bars</string>
     <string name="bowling_alleys_url">/systems/entertainment/bowling</string>
     <string name="dance_url">/systems/health/fitness/dance</string>
-    <string name="casual_dinning_url">/systems/restaurants/types/casual</string>
+    <string name="casual_dining_url">/systems/restaurants/types/casual</string>
     <string name="movie_theaters_url">/systems/entertainment/movie_theaters</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>
